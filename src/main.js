@@ -1,9 +1,12 @@
 //  Vertex shader program
 var VSHADER_SOURCE = `
 attribute vec4 a_Position;
+uniform float u_CosB, u_SinB;
 void main() {
-    gl_Position = a_Position;  // Coordinates
-    gl_PointSize = 10.0;
+    gl_Position.x = a_Position.x * u_CosB - a_Position.y * u_SinB;
+    gl_Position.y = a_Position.x * u_SinB + a_Position.y * u_CosB; 
+    gl_Position.z = a_Position.z;
+    gl_Position.w = 1.0;
 }`;
 
 // Fragment Shader program
@@ -36,6 +39,23 @@ void main() {
         return;
     }
 
+    const radians = Math.PI * 90.0 / 180
+    const cosB = Math.cos(radians)
+    const sinB = Math.sin(radians)
+
+    var u_CosB = gl.getUniformLocation(gl.program, 'u_CosB')
+    if (!u_CosB) {
+        console.log('unable to find location of uniform u_CosB')
+    }
+
+    var u_SinB = gl.getUniformLocation(gl.program, 'u_SinB')
+    if (!u_SinB) {
+        console.log('unable to find location of uniform u_SinB')
+    }
+
+    gl.uniform1f(u_CosB, cosB)
+    gl.uniform1f(u_SinB, sinB)
+
     // 7. Set colour for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -43,7 +63,7 @@ void main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     // Draw three points
-    gl.drawArrays(gl.POINTS, 0, n);
+    gl.drawArrays(gl.TRIANGLES, 0, n);
 })()
 
 function initVertexBuffers(gl) {
