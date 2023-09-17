@@ -1,9 +1,9 @@
 //  Vertex shader program
 var VSHADER_SOURCE = `
 attribute vec4 a_Position;
+uniform vec4 u_Translation;
 void main() {
-    gl_Position = a_Position;  // Coordinates
-    gl_PointSize = 10.0;
+    gl_Position = a_Position + u_Translation;
 }`;
 
 // Fragment Shader program
@@ -36,6 +36,13 @@ void main() {
         return;
     }
 
+    var u_Translation = gl.getUniformLocation(gl.program, 'u_Translation')
+    if(!u_Translation) {
+        console.log('Failed to find location of u_Translation')
+    }
+
+    gl.uniform4f(u_Translation, 0.5, 0.5, 0.0, 0.0)
+
     // 7. Set colour for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -43,7 +50,7 @@ void main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     // Draw three points
-    gl.drawArrays(gl.POINTS, 0, n);
+    gl.drawArrays(gl.TRIANGLES, 0, n);
 })()
 
 function initVertexBuffers(gl) {
