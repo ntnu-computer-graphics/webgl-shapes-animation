@@ -12,7 +12,7 @@ void main() {
     gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Set the color
 }`;
 
-(function () {
+function main () {
     // 1. Retrieve the canvas element
     var canvas = document.getElementById('webgl');
 
@@ -51,7 +51,7 @@ void main() {
 
     // Draw three points
     gl.drawArrays(gl.TRIANGLES, 0, n);
-})()
+}
 
 function initVertexBuffers(gl) {
     // 4.1. Define vertices
