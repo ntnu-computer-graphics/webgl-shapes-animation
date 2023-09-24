@@ -1,9 +1,9 @@
 //  Vertex shader program
 var VSHADER_SOURCE = `
 attribute vec4 a_Position;
-uniform mat4 u_Rotation;
+uniform mat4 u_ModelMatrix;
 void main() {
-    gl_Position = u_Rotation * a_Position;
+    gl_Position = u_ModelMatrix * a_Position;
 }`;
 
 // Fragment Shader program
@@ -36,22 +36,17 @@ function main () {
         return;
     }
 
-    var u_Rotation = gl.getUniformLocation(gl.program, 'u_Rotation')
-    if(!u_Rotation) {
-        console.log('Failed to find location of u_Rotation')
+    var u_ModelMatrix = gl.getUniformLocation(gl.program, 'u_ModelMatrix')
+    if(!u_ModelMatrix) {
+        console.log('Failed to find location of u_ModelMatrix')
     }
 
-    const angle = Math.PI * 90 / 180
-    const cosb = Math.cos(angle)
-    const sinb = Math.sin(angle)
+    var modelMatrix = new Matrix4()
 
-    var rotation = new Float32Array([
-        cosb,sinb,0.0,0.0,
-        -sinb,cosb,0.0,0.0,
-        0.0,0.0,1.0,0.0,
-        0.0,0.0,0.0,1.0])
+    modelMatrix.setRotate(180, 0, 0, 1)
+    modelMatrix.translate(0.5,0.5,0)
 
-    gl.uniformMatrix4fv(u_Rotation, false, rotation)
+    gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements)
 
     // 7. Set colour for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
