@@ -1,9 +1,9 @@
 //  Vertex shader program
 var VSHADER_SOURCE = `
 attribute vec4 a_Position;
-uniform vec4 u_Translation;
+uniform mat4 u_Translation;
 void main() {
-    gl_Position = a_Position + u_Translation;
+    gl_Position = u_Translation * a_Position;
 }`;
 
 // Fragment Shader program
@@ -41,7 +41,13 @@ function main () {
         console.log('Failed to find location of u_Translation')
     }
 
-    gl.uniform4f(u_Translation, 0.5, 0.5, 0.0, 0.0)
+    var translation = new Float32Array([
+        1.0,0.0,0.0,0.0,
+        0.0,1.0,0.0,0.0,
+        0.0,0.0,1.0,0.0,
+        0.5,0.5,0.5,1.0])
+
+    gl.uniformMatrix4fv(u_Translation, false, translation)
 
     // 7. Set colour for clearing <canvas>
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
