@@ -101,13 +101,7 @@ function draw(gl, n, currentAngle, modelMatrix, u_ModelMatrix) {
     gl.drawArrays(gl.TRIANGLES, 0, n);
 }
 
-var g_last = Date.now();
+
 function getNewAngle(angle) {
-    // Calculate the elapsed time
-    var now = Date.now();
-    var elapsed = now - g_last; // milliseconds
-    g_last = now;
-    // Update the rotation angle adjusted by the elapsed time
-    var newAngle = angle + (ANGLE_STEP * elapsed) / 1000.0;
-    return newAngle %= 360;
+    // Your code goes here
 }
