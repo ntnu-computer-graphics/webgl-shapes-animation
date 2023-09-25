@@ -51,11 +51,7 @@ function main() {
     var currentAngle = 0.0; // Current rotation angle
     var modelMatrix = new Matrix4(); // Specify the transformation matrix object
 
-    // Drawing the triangle
-    var tick = function () {
-        draw(gl, n, currentAngle, modelMatrix, u_ModelMatrix);
-    };
-    tick();
+    draw(gl, n, currentAngle, modelMatrix, u_ModelMatrix);
 }
 
 function initVertexBuffers(gl) {
